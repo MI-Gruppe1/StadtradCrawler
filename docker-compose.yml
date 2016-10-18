@@ -1,0 +1,4 @@
+StadtradCrawler:
+	build: .
+external_links:
+ - mysqldb
