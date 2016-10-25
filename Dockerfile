@@ -1,4 +1,4 @@
-FROM java:8 
+FROM openjdk:8 
 
 # Install maven
 RUN apt-get clean && apt-get update
@@ -6,17 +6,15 @@ RUN apt-get install -y maven
 
 WORKDIR /code
 
-# Prepare by downloading dependencies
+# Adding Mavendependencies
 ADD pom.xml /code/pom.xml
-RUN ["mvn", "dependency:resolve"]
-RUN ["mvn", "verify"]
 
-# Adding source, compile and package into a fat jar
+# Adding source folder
 ADD src /code/src
-RUN ["mvn", "package"]
 
-# Making the service accessible from other containers
-#EXPOSE 4567
+# Load all dependencies and create a fat jar
+RUN ["mvn", "insall"]
 
 # This Command will be executed in the Containter
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]
+#CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]
+CMD ["java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]

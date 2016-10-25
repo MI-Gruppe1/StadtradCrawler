@@ -26,23 +26,11 @@ public class App extends TimerTask {
 		WebCrawler crawler;
 		try {
 			crawler = new WebCrawler("http://api.citybik.es/v2/networks/stadtrad?fields=stations");
-			crawler.showData();	
-		} catch (JSONException | IOException e) {
+			crawler.persistData();	
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			MailNotification.sendMail(e);
+		} 
 			
 	}
 

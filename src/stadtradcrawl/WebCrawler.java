@@ -32,7 +32,6 @@ public class WebCrawler {
 		super();
 		json = this.readJsonFromUrl(url);
 		dataArray = json.getJSONObject("network").getJSONArray("stations");
-		
 	}
 
 	/*Read all from Reader rd and put it to one String. Return whole String */
@@ -60,17 +59,17 @@ public class WebCrawler {
 	}
 
 	/*Input-Parameter is JSONArray. Iterate through the array and print needed Information  */
-	public void showData() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void persistData() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		Connection connection = (Connection) DriverManager.getConnection(
-		    "jdbc:mysql://localhost:3306/mi",
+		    "jdbc:mysql://mysqldb:3306/mi",
 		    "mi",
 		    "miws16"
 		);
 		
-		String query = " insert into crawledData (station_id, station_name, free_bikes, information_timestamp)" +
-		               " values (?, ?, ?, ?)";
+		String query = " insert into crawledData (station_id, station_name, free_bikes, information_timestamp, latitude, longitude)" +
+		               " values (?, ?, ?, ?, ?, ?)";
 			      
 		for (int i = 0; i < dataArray.length(); i++) {
 			PreparedStatement preparedStmt = connection.prepareStatement(query);
@@ -78,12 +77,11 @@ public class WebCrawler {
 		      preparedStmt.setString(2, dataArray.getJSONObject(i).get("name").toString());
 		      preparedStmt.setString(3, dataArray.getJSONObject(i).get("free_bikes").toString());
 		      preparedStmt.setString(4, dataArray.getJSONObject(i).get("timestamp").toString());
+		      preparedStmt.setString(5, dataArray.getJSONObject(i).get("latitude").toString());
+		      preparedStmt.setString(6, dataArray.getJSONObject(i).get("longitude").toString());      
 
 		      // execute the preparedstatement
 		      preparedStmt.execute();
-			
-			System.out.println(" ID: " + dataArray.getJSONObject(i).get("id") + " Free_bikes: " + dataArray.getJSONObject(i).get("free_bikes") +  
-					" Name: " + dataArray.getJSONObject(i).get("name") + " Timestamp: " + dataArray.getJSONObject(i).get("timestamp"));
 		}
 		
 		connection.close();
