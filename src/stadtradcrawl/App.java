@@ -6,6 +6,8 @@
 package stadtradcrawl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,11 +28,10 @@ public class App extends TimerTask {
 		WebCrawler crawler;
 		try {
 			crawler = new WebCrawler("http://api.citybik.es/v2/networks/stadtrad?fields=stations");
-			crawler.persistData();	
+			crawler.sendDataToDB();	
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			MailNotification.sendMail(e);
-		} 
+		}
 			
 	}
 

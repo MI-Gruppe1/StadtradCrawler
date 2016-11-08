@@ -24,7 +24,7 @@ public class MailNotification {
 			    email.setDebug(true);
 			    email.setSmtpPort(SMTP_PORT);
 			    email.setSSLOnConnect(true);
-				email.addTo("a.loeffler1024@googlemail.com");
+				email.addTo(USERNAME);
 				email.setFrom(USERNAME, "StadtCrawlerService");
 			    email.setSubject("Exception");
 			    email.setMsg(sw.toString());

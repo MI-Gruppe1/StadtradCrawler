@@ -19,6 +19,16 @@
   		<artifactId>commons-email</artifactId>
   		<version>1.4</version>
   	</dependency>
+  	<dependency>
+  		<groupId>com.google.code.gson</groupId>
+  		<artifactId>gson</artifactId>
+  		<version>1.7.2</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.mashape.unirest</groupId>
+  		<artifactId>unirest-java</artifactId>
+  		<version>1.4.9</version>
+  	</dependency>
   </dependencies>
   <build>
   <sourceDirectory>src</sourceDirectory>

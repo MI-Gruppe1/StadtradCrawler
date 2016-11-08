@@ -12,16 +12,17 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Driver;
+import com.google.gson.Gson;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class WebCrawler {
 	
@@ -59,31 +60,25 @@ public class WebCrawler {
 	}
 
 	/*Input-Parameter is JSONArray. Iterate through the array and print needed Information  */
-	public void persistData() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+	public void sendDataToDB() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, UnirestException {
 		
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection connection = (Connection) DriverManager.getConnection(
-		    "jdbc:mysql://mysqldb:3306/mi",
-		    "mi",
-		    "miws16"
-		);
+		ArrayList<HashMap<String, String>> dataSet = new ArrayList<>();
 		
-		String query = " insert into crawledData (station_id, station_name, free_bikes, information_timestamp, latitude, longitude)" +
-		               " values (?, ?, ?, ?, ?, ?)";
-			      
 		for (int i = 0; i < dataArray.length(); i++) {
-			PreparedStatement preparedStmt = connection.prepareStatement(query);
-		      preparedStmt.setString(1, dataArray.getJSONObject(i).get("id").toString());
-		      preparedStmt.setString(2, dataArray.getJSONObject(i).get("name").toString());
-		      preparedStmt.setString(3, dataArray.getJSONObject(i).get("free_bikes").toString());
-		      preparedStmt.setString(4, dataArray.getJSONObject(i).get("timestamp").toString());
-		      preparedStmt.setString(5, dataArray.getJSONObject(i).get("latitude").toString());
-		      preparedStmt.setString(6, dataArray.getJSONObject(i).get("longitude").toString());      
+			HashMap<String, String> jsonObject = new HashMap<String, String>();
+			jsonObject.put("id" ,dataArray.getJSONObject(i).get("id").toString());
+			jsonObject.put("name", dataArray.getJSONObject(i).get("name").toString());
+			jsonObject.put("free_bikes", dataArray.getJSONObject(i).get("free_bikes").toString());
+			jsonObject.put("timestamp", dataArray.getJSONObject(i).get("timestamp").toString());
+			jsonObject.put("latitude", dataArray.getJSONObject(i).get("latitude").toString());
+			jsonObject.put("longitude", dataArray.getJSONObject(i).get("longitude").toString());
 
-		      // execute the preparedstatement
-		      preparedStmt.execute();
+			dataSet.add(jsonObject);
 		}
 		
-		connection.close();
+		// Send whole data to DBService
+		Unirest.post("http://localhost:4567/newData")
+		  .body(new Gson().toJson(dataSet))
+		  .asString();
 	}
 }

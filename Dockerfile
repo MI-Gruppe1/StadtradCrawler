@@ -13,8 +13,7 @@ ADD pom.xml /code/pom.xml
 ADD src /code/src
 
 # Load all dependencies and create a fat jar
-RUN ["mvn", "insall"]
+RUN ["mvn", "install"]
 
 # This Command will be executed in the Containter
-#CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]
-CMD ["java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]
+CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/StadtradCrawler-jar-with-dependencies.jar"]
