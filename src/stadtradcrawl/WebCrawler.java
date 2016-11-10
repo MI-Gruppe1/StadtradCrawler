@@ -13,7 +13,10 @@ import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -58,9 +61,20 @@ public class WebCrawler {
 			is.close();
 		}
 	}
+	
+	private String changeTimeStamptoUnixTimeString(String str) throws ParseException{
+		//2016-11-09T13:04:53.973000Z
+		String[] timewithoutmillis = str.split("\\.");
+		String timeStamp = timewithoutmillis[0] + "Z";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		Date date = sdf.parse(timeStamp); 
+		long milis = date.getTime()/1000;
+		return String.valueOf(milis);
+	}
 
 	/*Input-Parameter is JSONArray. Iterate through the array and print needed Information  */
-	public void sendDataToDB() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, UnirestException {
+	public void sendDataToDB() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, UnirestException, ParseException {
 		
 		ArrayList<HashMap<String, String>> dataSet = new ArrayList<>();
 		
@@ -69,7 +83,7 @@ public class WebCrawler {
 			jsonObject.put("id" ,dataArray.getJSONObject(i).get("id").toString());
 			jsonObject.put("name", dataArray.getJSONObject(i).get("name").toString());
 			jsonObject.put("free_bikes", dataArray.getJSONObject(i).get("free_bikes").toString());
-			jsonObject.put("timestamp", dataArray.getJSONObject(i).get("timestamp").toString());
+			jsonObject.put("timestamp", changeTimeStamptoUnixTimeString(dataArray.getJSONObject(i).get("timestamp").toString()));
 			jsonObject.put("latitude", dataArray.getJSONObject(i).get("latitude").toString());
 			jsonObject.put("longitude", dataArray.getJSONObject(i).get("longitude").toString());
 
