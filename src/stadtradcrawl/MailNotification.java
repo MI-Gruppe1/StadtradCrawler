@@ -1,3 +1,9 @@
+/**
+ * @author Flah-Uddin Ahmad
+ * @author Andreas Loeffler
+ * @version 1.0
+ */
+
 package stadtradcrawl;
 
 import java.io.PrintWriter;
@@ -5,6 +11,10 @@ import java.io.StringWriter;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
+
+/**
+ * MailNotification will send an E-Mail to mi.mailnotification(at)gmail.com when ever a Exception in a Crawler will appear
+ */
 
 public class MailNotification {
 	  private static final String SMTP_HOST = "smtp.gmail.com";

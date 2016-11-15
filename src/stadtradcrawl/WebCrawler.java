@@ -1,6 +1,7 @@
-/*
- * Quelle: http://stackoverflow.com/questions/4308554/simplest-way-to-read-json-from-a-url-in-java
- * Author: Andreas L�ffler
+/**
+ * @author Flah-Uddin Ahmad
+ * @author Andreas Loeffler
+ * @version 1.0
  */
 
 package stadtradcrawl;
@@ -12,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,11 +27,20 @@ import com.google.gson.Gson;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+
+/**
+ * WebCrawler crawls Data from citybike.es.
+ */
 public class WebCrawler {
 	
 	private JSONObject json = null;
 	private JSONArray dataArray = null;
 	
+	/**
+	 * @param url  http://api.citybik.es/v2/networks/stadtrad?fields=stations
+	 * @throws JSONException
+	 * @throws IOException
+	 */
 	public WebCrawler(String url) throws JSONException, IOException {
 		super();
 		json = this.readJsonFromUrl(url);
@@ -74,6 +83,16 @@ public class WebCrawler {
 	}
 
 	/*Input-Parameter is JSONArray. Iterate through the array and print needed Information  */
+	/**
+	 * Extract needed Data and put them into a JSON-Array.
+	 * Send Data to StadtradDBService
+	 * @throws JSONException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 * @throws UnirestException
+	 * @throws ParseException
+	 */
 	public void sendDataToDB() throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, UnirestException, ParseException {
 		
 		ArrayList<HashMap<String, String>> dataSet = new ArrayList<>();

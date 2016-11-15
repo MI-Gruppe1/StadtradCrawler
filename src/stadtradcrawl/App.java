@@ -1,18 +1,17 @@
-/*
- * Author: Andreas Loeffler
- * E-Mail: andreas.loeffler@haw-hamburg.de 
+/**
+ * @author Flah-Uddin Ahmad
+ * @author Andreas Loeffler
+ * @version 1.0
  */
 
 package stadtradcrawl;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.json.JSONException;
 
+/**
+ * App starts a timer, which will fire up every 5 mins a {@link WebCrawler}.
+ */
 public class App extends TimerTask {
 	
 	public static void main(String[] args) {
@@ -23,7 +22,10 @@ public class App extends TimerTask {
 
 	}
 
-	@Override
+	/**
+	 * Creates a WebCrawler and send a Request to the given URL.
+	 * Call Crawler-Method {@link WebCrawler#sendDataToDB()}.
+	 */
 	public void run(){
 		WebCrawler crawler;
 		try {
