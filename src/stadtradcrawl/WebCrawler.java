@@ -110,7 +110,8 @@ public class WebCrawler {
 		}
 		
 		// Send whole data to DBService
-		Unirest.post("http://localhost:4567/newData")
+		Unirest.post("http://stadtraddbservice:6000/newData")
+		//Unirest.post("http://localhost:6000/newData") // Fuer lokalen Test
 		  .body(new Gson().toJson(dataSet))
 		  .asString();
 	}
