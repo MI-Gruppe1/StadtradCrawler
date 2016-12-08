@@ -14,6 +14,8 @@ import java.util.TimerTask;
  */
 public class App extends TimerTask {
 	
+	private static WebCrawler crawler;
+	
 	public static void main(String[] args) {
 		
 		/*Create Timer. Time will execute every hour.*/
@@ -27,7 +29,6 @@ public class App extends TimerTask {
 	 * Call Crawler-Method {@link WebCrawler#sendDataToDB()}.
 	 */
 	public void run(){
-		WebCrawler crawler;
 		try {
 			crawler = new WebCrawler("http://api.citybik.es/v2/networks/stadtrad?fields=stations");
 			crawler.sendDataToDB();	
